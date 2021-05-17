@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello, Maersk!</title>
+	<style>
+		body {
+			margin: 0em 26em;
+		}
+		.heading {
+			text-align: center;
+		}
+		.main-container {
+			margin: 0em 2em;
+			padding: 1em;
+			max-width: 960px;
+			background-color: #efefef;
+		}
+		.container {
+			display: flex;
+			justify-content: space-between;
+
+		}
+		.container-box {
+			display: flex;
+			flex-wrap: wrap;
+			-webkit-flex-flow: row wrap;
+  			flex-flow: row wrap;
+		}
+		.maersk-button {
+			border-radius: 10px;
+			background-color: #72c3dc;
+			color: #FFFFFF;
+			font-size: 14px;
+			padding: 10px;
+			width: 93%;
+    		margin: 10px;
+		}
+		.card {
+			color: #FFFFFF;
+			background-color: #6f98a8;
+			text-align: center;
+			padding: 1em;
+    		font-size: 7em;
+			font-weight: bold;
+		}
+		@media only screen 
+	and (min-device-width: 320px) 
+	and (max-device-width: 480px)
+	and (-webkit-min-device-pixel-ratio: 2) {
+		body {
+			margin: 0 10px;
+		}
+	.main-container {
+		margin: 0;
+		padding: 0;
+		max-width: fit-content;
+		background-color: transparent;
+	}
+	.heading {
+    background-color: #000;
+    color: #fff;
+}
+	.container {
+		flex-direction: column-reverse;
+	}
+	.container-box {
+		flex-direction: column;
+	}
+	.item {
+		margin-bottom: 2px;
+	}
+	.card {
+		padding: 0em;
+    	font-size: 2em;
+		background-color: #efefef;
+		color: #000000;
+
+	}
+	.mobile-item::before {
+		content: "$";
+		background-color: #6f98a8;
+		color: #6f98a8;
+		position: absolute;
+    	line-height: 2.3;
+	}
+}
+		
+	</style>
+  </head>
+  <body>
+	<h1 class="heading">Shuffle and Sort</h1>
+	  <div class="main-container">
+		
+		<div class="container">
+			<div class="item">
+				<div class="container-box" id="my-cards">
+					
+				</div>
+			</div>
+			<div class="item order-1">
+				<button class="maersk-button" onclick="shuffle()">SHUFFLE</button>
+				<button class="maersk-button" onclick="sort()">SORT</button>
+			</div>
+		</div>
+		<h2 style="text-align: center;"><em>Shuffle and Sort by Chetan Prasad</em></h2>
+	  </div>
+	<script>
+		let list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+		const colors = ['#6f98a8', '#2b8ead', '#2f454e', '#bfbfbf'];
+		let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+		window.addEventListener("resize", resizeCheck);
+		function resizeCheck(){
+			isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+			console.log('resizeCheck', )
+			renderElements()
+		}
+		
+		function renderElements() {
+			let allElements = '';
+			let parent = document.getElementById('my-cards');
+			list.forEach(item => {
+				const cardEle = '<div class="item mobile-item"><div class="card">'+ item +'</div></div>';
+				allElements += cardEle;
+			});
+			parent.textContent = '';
+			parent.insertAdjacentHTML('beforeend', allElements);
+			const allCards = document.querySelectorAll('.card');
+			const allMobileItem = document.querySelectorAll('.mobile-item');
+			for(var i = 0; i < allCards.length; i++) {
+				const selectedColor =colors[Math.floor(Math.random() * colors.length)];
+				if (isMobile) {
+					var styleElem = document.head.appendChild(document.createElement("style"));
+						styleElem.innerHTML = `.mobile-item:nth-child(${i})::before {background-color: ${selectedColor};color: ${selectedColor};}`;
+				} else {
+					allCards[i].style.backgroundColor = selectedColor;
+				}
+			}
+		}
+		function shuffle() {
+			list = list.sort(() => Math.random() - 0.5);
+			renderElements();
+		}
+		function sort() {
+			list = list.sort();
+			renderElements();
+		}
+		renderElements();
+	</script>
+  </body>
+</html>
